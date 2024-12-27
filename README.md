@@ -1,5 +1,5 @@
 <a href="https://fyers.in/"><img src="https://assets.fyers.in/images/logo.svg" align="right" /></a>
-# Fyers Java SDK : fyers-api-v3 - v1.0.0
+# Fyers Java SDK : fyers-api-v3 - v1.0.1
 The official Fyers Java SDK for API-V3 Users [FYERS API](https://fyers.in/products/api/).
 
 Fyers API is a set of REST-like APIs that provide integration with our in-house trading platform with which you can build your own customized trading applications.
@@ -37,22 +37,17 @@ mvn deploy:deploy-file -Durl="file:repo" -Dfile=fyersjavasdk.jar -DgroupId=com.t
 
 - Add the following inside the <repositories> tag:
 ```xml
-    <dependencies>
-        <dependency>
-            <groupId>com.tts.in</groupId>
-            <artifactId>fyersjavasdk</artifactId>
-            <version>1.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.json</groupId>
-            <artifactId>json</artifactId>
-            <version>20211205</version>
-        </dependency>
-    </dependencies>
+    <repositories>
+        <repository>
+        <id>project.local</id>
+        <name>project</name>
+        <url>file:${project.basedir}/repo</url>
+        </repository>
+    </repositories>
 ```
 Please review the pom.xml file in ```fyers-javasdk``` folder for better clarity.
 
-- In the terminal, run the following command to clean and package the project:"mvn clean package"
+- In the terminal, run the following command to clean and package the project:```mvn clean package```
 
 - After the build is successful, the SDK is ready to use. Open the App.java file located in ```src/main``` and try running the sample code from the [Fyers API documentation.](https://myapi.fyers.in/docsv3)
 
@@ -109,3 +104,8 @@ Please review the pom.xml file in ```fyers-javasdk``` folder for better clarity.
  * Market Data Indices Update
  * Market Data Depth Update
  * Market Data Lite-Mode
+
+ ## Release Notes
+
+ * Fixed the data socket issue for the Sensex symbol.
+ * Enabled symbols with special characters in data APIs.
