@@ -6,6 +6,8 @@ import java.util.List;
 import org.json.JSONObject;
 
 import com.tts.in.model.FyersClass;
+import com.tts.in.model.GTTLeg;
+import com.tts.in.model.GTTModel;
 import com.tts.in.model.Leg;
 import com.tts.in.model.MultiLegModel;
 import com.tts.in.model.PlaceOrderModel;
@@ -40,6 +42,7 @@ public class App implements FyersSocketDelegate {
         // Request Parameters
         // app.GetGenerateCode(redirectURI, fyersClass);
         // app.GetGenerateToken(code, appHashId, fyersClass);
+        // app.GetLogoutValidation(fyersClass);
 
         // User
         // app.GetFunds(fyersClass);
@@ -56,6 +59,12 @@ public class App implements FyersSocketDelegate {
         // app.PlaceOrder(fyersClass);   
         // app.PlaceMultipleOrder(fyersClass);
         // app.PlaceMultiLegOrder(fyersClass);
+
+        // GTT Order Placement
+        // app.PlaceGTTOrder(fyersClass);   
+        // app.ModifyGTTOrder(fyersClass);
+        // app.CancelGTTOrder(fyersClass);        
+        // app.GetGTTOrderBook(fyersClass);  
 
         // Other Transactions
         // app.ModifySingleOrder(fyersClass);
@@ -85,6 +94,11 @@ public class App implements FyersSocketDelegate {
 
     public void GetGenerateToken(String code, String appHashId, FyersClass fyersClass) {
         JSONObject jsonObject = fyersClass.GenerateToken(code, appHashId);
+        System.out.println(jsonObject);
+    }
+
+    public void GetLogoutValidation(FyersClass fyersClass) {
+        JSONObject jsonObject = fyersClass.LogoutValidation();
         System.out.println(jsonObject);
     }
 
@@ -293,6 +307,62 @@ public class App implements FyersSocketDelegate {
             System.out.println("Place order Message :" + ResponseTuple.Item2());
         }
     }
+
+    public void PlaceGTTOrder(FyersClass order) {
+        List<GTTModel> placeOrdersList = new ArrayList<>();
+        GTTModel model = new GTTModel();
+        model.Side = 1;
+        model.Symbol = "NSE:CHOLAFIN-EQ";
+        model.productType = "CNC";
+        model.addGTTLeg("leg1", new GTTLeg(1,1000,1000));
+
+        placeOrdersList.add(model);
+
+        Tuple<JSONObject, JSONObject> ResponseTuple = order.PlaceGTTOrder(placeOrdersList);
+        if (ResponseTuple.Item2() == null) {
+            System.out.println("Orders:" + ResponseTuple.Item1());
+        } else {
+            System.out.println("Place order Message :" + ResponseTuple.Item2());
+        }
+    }
+
+    public void ModifyGTTOrder(FyersClass order) {
+        List<GTTModel> placeOrdersList = new ArrayList<>();
+        GTTModel model = new GTTModel();
+        model.Id = "25010700000001";
+        model.addGTTLeg("leg1", new GTTLeg(1000,1000,3));
+        model.addGTTLeg("leg2", new GTTLeg(100,100,3));
+
+        placeOrdersList.add(model);
+
+        Tuple<JSONObject, JSONObject> ResponseTuple = order.ModifyGTTOrder(placeOrdersList);
+        if (ResponseTuple.Item2() == null) {
+            System.out.println("Orders:" + ResponseTuple.Item1());
+        } else {
+            System.out.println("Place order Message :" + ResponseTuple.Item2());
+        }
+    }
+
+    public void CancelGTTOrder(FyersClass order) {
+        String OrderId = "24091000443820";
+
+        Tuple<JSONObject, JSONObject> ResponseTuple = order.CancelGTTOrder(OrderId);
+        if (ResponseTuple.Item2() == null) {
+            System.out.println("Orders ID: " + ResponseTuple.Item1());
+        } else {
+            System.out.println("Place order Message : " + ResponseTuple.Item2());
+        }
+    }
+    
+    public void GetGTTOrderBook(FyersClass order) {
+        Tuple<JSONObject, JSONObject> tradeTuple = order.GetGTTOrderBook();
+        if (tradeTuple.Item2() == null) {
+            System.out.println("TradeBook:" + tradeTuple.Item1()); 
+        }else {
+            System.out.println("TradeBook Error: " + tradeTuple.Item2());
+        }
+    }
+
 
     public void ModifySingleOrder(FyersClass order) {
         PlaceOrderModel model = new PlaceOrderModel();
