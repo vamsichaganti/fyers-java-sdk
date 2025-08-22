@@ -116,5 +116,7 @@ Note: If the previous fyersjavasdk package is already in use, clear the Maven ca
 
  ## Release Notes
 
- * Added Logout API which invalidates the access token.
- * Fixed Auth Code Generation for Unix and Linux based operating system.
+ * Fixed missing symbol key in market data indices update
+ * Updated WebSocket reconnection logic
+ * Fixed rate limiting issue caused by internet connectivity checks
+
